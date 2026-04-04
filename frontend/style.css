@@ -1,0 +1,21 @@
+body {
+  font-family: Arial;
+  background: #f0f7f0;
+  text-align: center;
+}
+
+.container {
+  margin-top: 50px;
+}
+
+button {
+  padding: 10px 20px;
+  background: green;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+#result {
+  margin-top: 20px;
+}
