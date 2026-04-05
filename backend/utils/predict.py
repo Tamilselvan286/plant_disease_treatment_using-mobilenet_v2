@@ -13,7 +13,7 @@ model = None
 
 if not os.path.exists(model_path):
     print("Model not found locally. Downloading from Google Drive...")
-    url = "https://drive.google.com/uc?id=10hwfSimGop7IXd91FlPjozuTTLgle_Mp"
+    url = "https://drive.google.com/uc?id=13QDnfEFPsSkfNQaNt7hU_4GM1eg2oeol"
     try:
         gdown.download(url, model_path, quiet=False, fuzzy=True)
     except Exception as e:
