@@ -2,43 +2,25 @@ import os
 import tensorflow as tf
 import numpy as np
 from tensorflow.keras.preprocessing import image
-import gdown
 
 # ==============================
-# Path setup
+# Path setup (clean & simple)
 # ==============================
-backend_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-model_dir = os.path.join(backend_dir, "model")
-os.makedirs(model_dir, exist_ok=True)
-
-model_path = os.path.join(model_dir, "plant_disease_model.h5")
-
-# ==============================
-# Google Drive link (.h5)
-# ==============================
-url = "https://drive.google.com/uc?id=1rSNZQOZHW4aN1Hf6FJmbhMFBQ3967xZR"
-
-# ==============================
-# Download model if not exists
-# ==============================
-if not os.path.exists(model_path):
-    print("📥 Downloading model...")
-    try:
-        gdown.download(url, model_path, quiet=False)
-    except Exception as e:
-        print("❌ Download failed:", e)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+MODEL_PATH = os.path.join(BASE_DIR, "model", "plant_disease_model.h5")
 
 # ==============================
 # Load model
 # ==============================
 model = None
+
 try:
-    if os.path.exists(model_path):
+    if os.path.exists(MODEL_PATH):
         print("📦 Loading model...")
-        model = tf.keras.models.load_model(model_path, compile=False)
+        model = tf.keras.models.load_model(MODEL_PATH, compile=False)
         print("✅ Model loaded successfully")
     else:
-        print("❌ Model file not found")
+        print(f"❌ Model file not found at {MODEL_PATH}")
 except Exception as e:
     print("❌ Error loading model:", e)
 
@@ -69,7 +51,7 @@ CLASS_NAMES = [
 # ==============================
 def predict_disease(img_path):
     if model is None:
-        raise Exception("❌ Model not loaded. Check download or path.")
+        raise Exception("❌ Model not loaded. Check model path.")
 
     img = image.load_img(img_path, target_size=(224, 224))
     img_array = image.img_to_array(img) / 255.0
