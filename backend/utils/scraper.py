@@ -30,3 +30,24 @@ def fetch_image(query):
     except Exception as e:
         print("Scraper Error:", e)
         return ""
+
+def fetch_summary(query):
+    try:
+        search_query = urllib.parse.quote(f"{query} plant disease treatment")
+        url = f"https://html.duckduckgo.com/html/?q={search_query}"
+        
+        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'})
+        html = urllib.request.urlopen(req).read().decode('utf-8')
+        
+        # Simple regex to extract the first result snippet from duckduckgo html
+        m = re.search(r'<a class="result__snippet[^>]*>(.*?)</a>', html, re.IGNORECASE | re.DOTALL)
+        if m:
+            # Clean up HTML tags and extra whitespace
+            snippet = re.sub(r'<[^>]+>', '', m.group(1))
+            snippet = re.sub(r'\s+', ' ', snippet).strip()
+            return snippet
+            
+        return "No summary available online."
+    except Exception as e:
+        print("Summary Scraper Error:", e)
+        return "Could not fetch summary."

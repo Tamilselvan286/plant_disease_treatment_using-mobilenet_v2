@@ -6,7 +6,7 @@ from PIL import Image
 try:
     from utils.predict import predict_disease
     from utils.translate import deep_translate
-    from utils.scraper import fetch_image
+    from utils.scraper import fetch_image, fetch_summary
 except ModuleNotFoundError:
     st.error("Could not import utility modules. Make sure you're running this from the backend folder.")
 
@@ -76,14 +76,20 @@ if uploaded_file is not None:
                         for chem in data["management"]["chemical_control"]:
                             chem["image"] = fetch_image(chem["chemical_name"])
 
+                    with st.spinner("Fetching summary..."):
+                        data["web_summary"] = fetch_summary(disease.replace('_', ' '))
+
                     if lang == "ta":
                         data = deep_translate(data, "ta")
 
                     st.markdown("---")
                     st.markdown(f"## 🩺 {data.get('disease_name', '')}")
                     
+                    if data.get("web_summary") and data["web_summary"] != "No summary available online.":
+                        st.info("**Web Summary:** " + data["web_summary"])
+                    
                     # Symptoms using a formatted card
-                    st.info("**Symptoms:**")
+                    st.markdown("**Symptoms:**")
                     symptoms = data.get("symptoms", [])
                     if isinstance(symptoms, list):
                         for sym in symptoms:
