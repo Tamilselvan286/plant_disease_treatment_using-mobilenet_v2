@@ -6,7 +6,7 @@ from PIL import Image
 try:
     from utils.predict import predict_disease
     from utils.translate import deep_translate
-    from utils.scraper import fetch_image, fetch_summary
+    #from utils.scraper import fetch_image, fetch_summary
 except ModuleNotFoundError:
     st.error("Could not import utility modules. Make sure you're running this from the backend folder.")
 
